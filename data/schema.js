@@ -14,6 +14,7 @@ import {
   connectionArgs,
   connectionDefinitions,
   connectionFromArray,
+  cursorForObjectInConnection,
   fromGlobalId,
   globalIdField,
   mutationWithClientMutationId,
@@ -101,7 +102,6 @@ var GraphQLAddMessageMutation = mutationWithClientMutationId({
       type: GraphQLMessageEdge,
       resolve: ({messageID}) => {
         var message = getMessage(messageID);
-        console.log(message);
         return {
           cursor: cursorForObjectInConnection(getMessages(), message),
           node: message,
@@ -119,33 +119,10 @@ var GraphQLAddMessageMutation = mutationWithClientMutationId({
   },
 });
 
-var GraphQLRemoveMessageMutation = mutationWithClientMutationId({
-  name: 'RemoveMessage',
-  inputFields: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
-  },
-  outputFields: {
-    deletedMessageId: {
-      type: GraphQLID,
-      resolve: ({id}) => id,
-    },
-    viewer: {
-      type: GraphQLUser,
-      resolve: () => getViewer(),
-    },
-  },
-  mutateAndGetPayload: ({id}) => {
-    var localTodoId = fromGlobalId(id).id;
-    removeTodo(localTodoId);
-    return {id};
-  },
-});
-
 var Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addMessage: GraphQLAddMessageMutation,
-    removeMessage: GraphQLRemoveMessageMutation,
+    addMessage: GraphQLAddMessageMutation
   },
 });
 

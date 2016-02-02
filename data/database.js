@@ -4,7 +4,6 @@ export class User extends Object {};
 
 // Mock user data
 var viewer = new User();
-viewer.id = '1';
 viewer.name = 'Default';
 
 // Mock messages data
