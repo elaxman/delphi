@@ -31,7 +31,7 @@ import {
   removeMessage,
 } from './database';
 
-var {nodeInterface, nodeField} = nodeDefinitions(
+var { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
     if (type === 'Message') {
@@ -66,7 +66,7 @@ var GraphQLMessage = new GraphQLObjectType({
 var {
   connectionType: MessagesConnection,
   edgeType: GraphQLMessageEdge,
-} = connectionDefinitions({name: 'Message', nodeType: GraphQLMessage});
+} = connectionDefinitions({ name: 'Message', nodeType: GraphQLMessage });
 
 var GraphQLUser = new GraphQLObjectType({
   name: 'User',
@@ -100,7 +100,7 @@ var GraphQLAddMessageMutation = mutationWithClientMutationId({
   outputFields: {
     messageEdge: {
       type: GraphQLMessageEdge,
-      resolve: ({messageID}) => {
+      resolve: ({ messageID }) => {
         var message = getMessage(messageID);
         return {
           cursor: cursorForObjectInConnection(getMessages(), message),

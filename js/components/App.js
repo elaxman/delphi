@@ -4,6 +4,7 @@ import Relay from 'react-relay';
 import AddMessageMutation from '../mutations/AddMessageMutation';
 
 import MessageCreation from './MessageCreation';
+import MessagesList from './MessagesList';
 
 class App extends React.Component {
 
@@ -16,12 +17,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Items list</h1>
-        <ul>
-          {this.props.viewer.messages.edges.map(edge =>
-            <li key={edge.node.id}>{edge.node.text} (ID: {edge.node.id})</li>
-          )}
-        </ul>
+        <h1>Messages</h1>
+
+        <MessagesList viewer={this.props.viewer} />
 
         <MessageCreation
           className="new-item"
@@ -37,14 +35,7 @@ export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {
-        messages(first: 10) {
-          edges {
-            node {
-              id,
-              text,
-            },
-          },
-        },
+        ${MessagesList.getFragment('viewer')}
         ${AddMessageMutation.getFragment('viewer')},
       }
     `,

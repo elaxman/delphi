@@ -1,10 +1,11 @@
 import Relay from 'react-relay';
 
-export default class AddItemMutation extends Relay.Mutation {
+export default class RemoveMessageMutation extends Relay.Mutation {
   static fragments = {
-    viewer: () => Relay.QL`
-      fragment on User {
+    message: () => Relay.QL`
+      fragment on Message {
         id,
+        text,
       }
     `,
   };
