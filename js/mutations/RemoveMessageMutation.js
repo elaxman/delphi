@@ -11,52 +11,41 @@ export default class RemoveMessageMutation extends Relay.Mutation {
   };
 
   getMutation() {
-    return Relay.QL`mutation{addItem}`;
+    return Relay.QL`mutation{removeMessage}`;
   }
 
   getFatQuery() {
     return Relay.QL`
-      fragment on AddItemoPayload {
+      fragment on RemoveMessagePayload {
+        deletedMessageId,
         viewer {
-          items,
+          id,
+          messages,
         },
       }
     `;
   }
+
   getConfigs() {
     return [{
-      type: 'RANGE_ADD',
+      type: 'NODE_DELETE',
       parentName: 'viewer',
       parentID: this.props.viewer.id,
-      connectionName: 'todos',
-      edgeName: 'todoEdge',
-      rangeBehaviors: {
-        '': 'append',
-        'status(any)': 'append',
-        'status(active)': 'append',
-        'status(completed)': null,
-      },
+      connectionName: 'messages',
+      deletedIDFieldName: 'deletedMessageId',
     }];
   }
+
   getVariables() {
     return {
-      text: this.props.text,
+      id: this.props.message.id,
     };
   }
+
   getOptimisticResponse() {
     return {
-      // FIXME: totalCount gets updated optimistically, but this edge does not
-      // get added until the server responds
-      todoEdge: {
-        node: {
-          complete: false,
-          text: this.props.text,
-        },
-      },
-      viewer: {
-        id: this.props.viewer.id,
-        totalCount: this.props.viewer.totalCount + 1,
-      },
+      deletedTodoId: this.props.message.id,
+      viewer: { id: this.props.viewer.id },
     };
   }
 }

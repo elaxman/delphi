@@ -11,13 +11,13 @@ class MessagesListItem extends React.Component {
 
   _removeMessage() {
     Relay.Store.commitUpdate(
-      new RemoveMessageMutation({todo: this.props.message})
+      new RemoveMessageMutation({message: this.props.message, viewer: this.props.viewer})
     );
   };
 
   render() {
     return (
-      <li>{this.props.message.text} (ID: {this.props.message.id})</li>
+      <li><span>{this.props.message.text}</span> <button onClick={this._handleDestroyClick}>Delete</button></li>
     );
   }
 }

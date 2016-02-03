@@ -119,10 +119,33 @@ var GraphQLAddMessageMutation = mutationWithClientMutationId({
   },
 });
 
+var GraphQLRemoveMessageMutation = mutationWithClientMutationId({
+  name: 'RemoveMessage',
+  inputFields: {
+    id: { type: new GraphQLNonNull(GraphQLID) },
+  },
+  outputFields: {
+    deletedMessageId: {
+      type: GraphQLID,
+      resolve: ({ id }) => id,
+    },
+    viewer: {
+      type: GraphQLUser,
+      resolve: () => getViewer(),
+    },
+  },
+  mutateAndGetPayload: ({ id }) => {
+    var messageID = fromGlobalId(id).id;
+    removeMessage(messageID);
+    return { id };
+  },
+});
+
 var Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addMessage: GraphQLAddMessageMutation
+    addMessage: GraphQLAddMessageMutation,
+    removeMessage: GraphQLRemoveMessageMutation,
   },
 });
 

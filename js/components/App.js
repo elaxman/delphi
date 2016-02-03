@@ -35,7 +35,7 @@ export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {
-        ${MessagesList.getFragment('viewer')}
+        ${MessagesList.getFragment('viewer')},
         ${AddMessageMutation.getFragment('viewer')},
       }
     `,
