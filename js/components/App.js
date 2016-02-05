@@ -17,15 +17,16 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Messages</h1>
+        <div className="title">Messages / TODO list</div>
+        <div className="chat">
+          <MessagesList viewer={this.props.viewer} />
 
-        <MessagesList viewer={this.props.viewer} />
-
-        <MessageCreation
-          className="new-item"
-          onSave={this._handleMessageCreationSave}
-          placeholder="Enter your message"
-        />
+          <MessageCreation
+            className="input"
+            onSave={this._handleMessageCreationSave}
+            placeholder='Enter your message/TODO and press "Enter"'
+          />
+        </div>
       </div>
     );
   }

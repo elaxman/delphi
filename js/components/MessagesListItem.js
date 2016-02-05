@@ -20,10 +20,16 @@ class MessagesListItem extends React.Component {
   render() {
     var { text, timestamp} = this.props.message;
     return (
-      <li>
-        <span>{text}   </span>
-        <span>{moment(timestamp).format('MM-DD, h:mm')}</span>
-        <button onClick={this._handleDestroyClick}>Delete</button>
+      <li className="message">
+        <div className="timestamp">
+          <span>{moment(timestamp).format('H:mm')}</span>
+        </div>
+        <div className="text">
+          <span>{text}</span>
+        </div>
+        <div className="delete-btn">
+          <button onClick={this._handleDestroyClick}>Delete</button>
+        </div>
       </li>
     );
   }

@@ -8,7 +8,7 @@ class MessagesList extends React.Component {
     const { viewer } = this.props;
 
     return (
-      <section>
+      <section className="messages">
         <ul>
           {this.props.viewer.messages.edges.map(edge =>
             <MessagesListItem key={edge.node.id} message={edge.node} viewer={viewer} />

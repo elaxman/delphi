@@ -13,7 +13,7 @@ var nextMessageId = 0;
 var messages = {};
 
 addMessage('Hello World', moment().toISOString());
-addMessage('Write your message below', moment().toISOString());
+addMessage('Write your message/TODO below', moment().toISOString());
 
 export function addMessage(text, timestamp) {
   var message = new Message();
