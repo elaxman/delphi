@@ -59,6 +59,10 @@ var GraphQLMessage = new GraphQLObjectType({
       type: GraphQLString,
       resolve: (obj) => obj.text,
     },
+    timestamp: {
+      type: GraphQLString,
+      resolve: (obj) => obj.timestamp,
+    },
   },
   interfaces: [nodeInterface],
 });
@@ -96,6 +100,7 @@ var GraphQLAddMessageMutation = mutationWithClientMutationId({
   name: 'AddMessage',
   inputFields: {
     text: { type: new GraphQLNonNull(GraphQLString) },
+    timestamp: { type: new GraphQLNonNull(GraphQLString) },
   },
   outputFields: {
     messageEdge: {
@@ -113,8 +118,8 @@ var GraphQLAddMessageMutation = mutationWithClientMutationId({
       resolve: () => getViewer(),
     },
   },
-  mutateAndGetPayload: ({ text }) => {
-    var messageID = addMessage(text);
+  mutateAndGetPayload: ({ text, timestamp }) => {
+    var messageID = addMessage(text, timestamp);
     return { messageID };
   },
 });

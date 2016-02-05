@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 // Model types
 export class Message extends Object {};
 export class User extends Object {};
@@ -10,13 +12,14 @@ viewer.name = 'Default';
 var nextMessageId = 0;
 var messages = {};
 
-addMessage('Hello World');
-addMessage('Write your message below');
+addMessage('Hello World', moment().toISOString());
+addMessage('Write your message below', moment().toISOString());
 
-export function addMessage(text) {
+export function addMessage(text, timestamp) {
   var message = new Message();
-  message.text = text;
   message.id = `${nextMessageId++}`;
+  message.text = text;
+  message.timestamp = timestamp;
   messages[message.id] = message;
   return message.id;
 }
@@ -26,7 +29,7 @@ export function getMessage(id) {
 }
 
 export function getMessages() {
-  return Object.keys(messages).map((key) => messages[key]);;
+  return Object.keys(messages).map((key) => messages[key]);
 }
 
 export function removeMessage(id) {

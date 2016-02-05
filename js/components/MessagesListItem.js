@@ -1,6 +1,8 @@
 import React from 'react';
 import Relay from 'react-relay';
 
+import moment from 'moment';
+
 import RemoveMessageMutation from '../mutations/RemoveMessageMutation';
 
 class MessagesListItem extends React.Component {
@@ -16,8 +18,13 @@ class MessagesListItem extends React.Component {
   };
 
   render() {
+    var { text, timestamp} = this.props.message;
     return (
-      <li><span>{this.props.message.text}</span> <button onClick={this._handleDestroyClick}>Delete</button></li>
+      <li>
+        <span>{text}   </span>
+        <span>{moment(timestamp).format('MM-DD, h:mm')}</span>
+        <button onClick={this._handleDestroyClick}>Delete</button>
+      </li>
     );
   }
 }
@@ -28,6 +35,7 @@ export default Relay.createContainer(MessagesListItem, {
       fragment on Message {
         id,
         text,
+        timestamp,
         ${RemoveMessageMutation.getFragment('message')},
       }
     `,

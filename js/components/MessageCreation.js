@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
+import moment from 'moment';
+
 export default class MessageCreation extends React.Component {
 
   static propTypes = {
@@ -19,7 +21,7 @@ export default class MessageCreation extends React.Component {
   }
 
   _handleChange = (e) => {
-    this.setState({text: e.target.value});
+    this.setState({text: e.target.value, timestamp: moment().toISOString()});
   };
 
   _handleKeyDown = (e) => {
@@ -31,9 +33,14 @@ export default class MessageCreation extends React.Component {
   };
 
   _commitChanges = () => {
-    let newMessage = this.state.text.trim();
-    this.props.onSave(newMessage);
-    this.setState({text: ''});
+    let newMessage = {
+      text: this.state.text.trim(),
+      timestamp: this.state.timestamp,
+    };
+    if (newMessage.text) {
+      this.props.onSave(newMessage);
+      this.setState({text: ''});
+    }
   };
 
   render() {

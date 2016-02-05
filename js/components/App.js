@@ -8,9 +8,9 @@ import MessagesList from './MessagesList';
 
 class App extends React.Component {
 
-  _handleMessageCreationSave = (text) => {
+  _handleMessageCreationSave = ({text, timestamp}) => {
     Relay.Store.commitUpdate(
-      new AddMessageMutation({text, viewer: this.props.viewer})
+      new AddMessageMutation({text, timestamp, viewer: this.props.viewer})
     );
   };
 

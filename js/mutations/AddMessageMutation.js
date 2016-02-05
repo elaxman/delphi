@@ -40,6 +40,7 @@ export default class AddMessageMutation extends Relay.Mutation {
   getVariables() {
     return {
       text: this.props.text,
+      timestamp: this.props.timestamp,
     };
   }
 
@@ -48,6 +49,7 @@ export default class AddMessageMutation extends Relay.Mutation {
       messageEdge: {
         node: {
           text: this.props.text,
+          timestamp: this.props.timestamp,
         },
       },
       viewer: {
