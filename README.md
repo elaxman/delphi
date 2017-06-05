@@ -1,6 +1,4 @@
-# Relay GraphQL TODO list
-
-Based on https://github.com/relayjs/relay-starter-kit
+# ReactJs GraphQL Relay Mogodb Experiment
 
 ## Installation
 
