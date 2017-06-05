@@ -1,30 +1,30 @@
 import React from 'react';
 import Relay from 'react-relay';
 
-import AddMessageMutation from '../mutations/AddMessageMutation';
+import AddDatacenterMutation from '../mutations/AddDatacenterMutation';
 
-import MessageCreation from './MessageCreation';
-import MessagesList from './MessagesList';
+import DatacenterCreation from './DatacenterCreation';
+import DatacentersList from './DatacentersList';
 
 class App extends React.Component {
 
-  _handleMessageCreationSave = ({text, timestamp}) => {
+  _handleDatacenterCreationSave = ({text, timestamp}) => {
+    console.log(text);
     Relay.Store.commitUpdate(
-      new AddMessageMutation({text, timestamp, viewer: this.props.viewer})
+      new AddDatacenterMutation({text, timestamp, cloud: this.props.cloud})
     );
   };
 
   render() {
     return (
       <div>
-        <div className="title">Messages / TODO list</div>
-        <div className="chat">
-          <MessagesList viewer={this.props.viewer} />
-
-          <MessageCreation
+        <div className="title"> ReactJS Demo </div>
+         <div className="dc">
+	   <DatacentersList cloud={this.props.cloud} />
+          <DatacenterCreation
             className="input"
-            onSave={this._handleMessageCreationSave}
-            placeholder='Enter your message/TODO and press "Enter"'
+            onSave={this._handleDatacenterCreationSave}
+            placeholder='Enter your datacenter/TODO and press "Enter"'
           />
         </div>
       </div>
@@ -34,10 +34,10 @@ class App extends React.Component {
 
 export default Relay.createContainer(App, {
   fragments: {
-    viewer: () => Relay.QL`
-      fragment on User {
-        ${MessagesList.getFragment('viewer')},
-        ${AddMessageMutation.getFragment('viewer')},
+    cloud: () => Relay.QL`
+      fragment on Cloud {
+        ${DatacentersList.getFragment('cloud')},
+        ${AddDatacenterMutation.getFragment('cloud')},
       }
     `,
   },

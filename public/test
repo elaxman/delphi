@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <title>line example</title>
+    <link rel="stylesheet" href="chart.css">
+  </head>
+  <body>
+	<h1> Line Chart </h1>
+	<div id="main" </div>
+        <script src="chart.js"></script>
+  </body>
+</html>

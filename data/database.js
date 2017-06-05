@@ -1,41 +1,41 @@
 import moment from 'moment';
 
 // Model types
-export class Message extends Object {};
-export class User extends Object {};
+export class Datacenter extends Object {};
+export class Cloud extends Object {};
 
 // Mock user data
-var viewer = new User();
-viewer.name = 'Default';
+var cloud = new Cloud();
+cloud.name = 'Default';
 
-// Mock messages data
-var nextMessageId = 0;
-var messages = {};
+// Mock datacenters data
+var nextDatacenterId = 0;
+var datacenters = {};
 
-addMessage('Hello World', moment().toISOString());
-addMessage('Write your message/TODO below', moment().toISOString());
+addDatacenter('Hello World', moment().toISOString());
+addDatacenter('Write your datacenter/TODO below', moment().toISOString());
 
-export function addMessage(text, timestamp) {
-  var message = new Message();
-  message.id = `${nextMessageId++}`;
-  message.text = text;
-  message.timestamp = timestamp;
-  messages[message.id] = message;
-  return message.id;
+export function addDatacenter(text, timestamp) {
+  var datacenter = new Datacenter();
+  datacenter.id = `${nextDatacenterId++}`;
+  datacenter.text = text;
+  datacenter.timestamp = timestamp;
+  datacenters[datacenter.id] = datacenter;
+  return datacenter.id;
 }
 
-export function getMessage(id) {
-  return messages[id];
+export function getDatacenter(id) {
+  return datacenters[id];
 }
 
-export function getMessages() {
-  return Object.keys(messages).map((key) => messages[key]);
+export function getDatacenters() {
+  return Object.keys(datacenters).map((key) => datacenters[key]);
 }
 
-export function removeMessage(id) {
-  delete messages[id];
+export function removeDatacenter(id) {
+  delete datacenters[id];
 }
 
-export function getViewer() {
-  return viewer;
+export function getCloud() {
+  return cloud;
 }

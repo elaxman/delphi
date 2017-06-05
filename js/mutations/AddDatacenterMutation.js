@@ -1,24 +1,24 @@
 import Relay from 'react-relay';
 
-export default class AddMessageMutation extends Relay.Mutation {
+export default class AddDatacenterMutation extends Relay.Mutation {
   static fragments = {
-    viewer: () => Relay.QL`
-      fragment on User {
+    cloud: () => Relay.QL`
+      fragment on Cloud {
         id,
       }
     `,
   };
 
   getMutation() {
-    return Relay.QL`mutation{addMessage}`;
+    return Relay.QL`mutation{addDatacenter}`;
   }
 
   getFatQuery() {
     return Relay.QL`
-      fragment on AddMessagePayload {
-        messageEdge,
-        viewer {
-          messages,
+      fragment on AddDatacenterPayload {
+        datacenterEdge,
+        cloud {
+          datacenters,
         },
       }
     `;
@@ -27,10 +27,10 @@ export default class AddMessageMutation extends Relay.Mutation {
   getConfigs() {
     return [{
       type: 'RANGE_ADD',
-      parentName: 'viewer',
-      parentID: this.props.viewer.id,
-      connectionName: 'messages',
-      edgeName: 'messageEdge',
+      parentName: 'cloud',
+      parentID: this.props.cloud.id,
+      connectionName: 'datacenters',
+      edgeName: 'datacenterEdge',
       rangeBehaviors: {
         '': 'append',
       },
@@ -46,14 +46,14 @@ export default class AddMessageMutation extends Relay.Mutation {
 
   getOptimisticResponse() {
     return {
-      messageEdge: {
+      datacenterEdge: {
         node: {
           text: this.props.text,
           timestamp: this.props.timestamp,
         },
       },
-      viewer: {
-        id: this.props.viewer.id,
+      cloud: {
+        id: this.props.cloud.id,
       },
     };
   }

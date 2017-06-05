@@ -22,39 +22,39 @@ import {
 } from 'graphql-relay';
 
 import {
-  Message,
-  User,
-  addMessage,
-  getMessage,
-  getMessages,
-  getViewer,
-  removeMessage,
+  Datacenter,
+  Cloud,
+  addDatacenter,
+  getDatacenter,
+  getDatacenters,
+  getCloud,
+  removeDatacenter,
 } from './database';
 
 var { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
-    if (type === 'Message') {
-      return getMessage(id);
-    } else if (type === 'User') {
-      return getViewer();
+    if (type === 'Datacenter') {
+      return getDatacenter(id);
+    } else if (type === 'Cloud') {
+      return getCloud();
     }
     return null;
   },
   (obj) => {
-    if (obj instanceof Message) {
-      return GraphQLMessage;
-    } else if (obj instanceof User) {
-      return GraphQLUser;
+    if (obj instanceof Datacenter) {
+      return GraphQLDatacenter;
+    } else if (obj instanceof Cloud) {
+      return GraphQLCloud;
     }
     return null;
   }
 );
 
-var GraphQLMessage = new GraphQLObjectType({
-  name: 'Message',
+var GraphQLDatacenter = new GraphQLObjectType({
+  name: 'Datacenter',
   fields: {
-    id: globalIdField('Message'),
+    id: globalIdField('Datacenter'),
     text: {
       type: GraphQLString,
       resolve: (obj) => obj.text,
@@ -68,18 +68,18 @@ var GraphQLMessage = new GraphQLObjectType({
 });
 
 var {
-  connectionType: MessagesConnection,
-  edgeType: GraphQLMessageEdge,
-} = connectionDefinitions({ name: 'Message', nodeType: GraphQLMessage });
+  connectionType: DatacentersConnection,
+  edgeType: GraphQLDatacenterEdge,
+} = connectionDefinitions({ name: 'Datacenter', nodeType: GraphQLDatacenter });
 
-var GraphQLUser = new GraphQLObjectType({
-  name: 'User',
+var GraphQLCloud = new GraphQLObjectType({
+  name: 'Cloud',
   fields: {
-    id: globalIdField('User'),
-    messages: {
-      type: MessagesConnection,
+    id: globalIdField('Cloud'),
+    datacenters: {
+      type: DatacentersConnection,
       args: connectionArgs,
-      resolve: (obj, args) => connectionFromArray(getMessages(), args),
+      resolve: (obj, args) => connectionFromArray(getDatacenters(), args),
     },
   },
   interfaces: [nodeInterface],
@@ -88,60 +88,60 @@ var GraphQLUser = new GraphQLObjectType({
 var Root = new GraphQLObjectType({
   name: 'Root',
   fields: {
-    viewer: {
-      type: GraphQLUser,
-      resolve: () => getViewer(),
+    cloud: {
+      type: GraphQLCloud,
+      resolve: () => getCloud(),
     },
     node: nodeField,
   },
 });
 
-var GraphQLAddMessageMutation = mutationWithClientMutationId({
-  name: 'AddMessage',
+var GraphQLAddDatacenterMutation = mutationWithClientMutationId({
+  name: 'AddDatacenter',
   inputFields: {
     text: { type: new GraphQLNonNull(GraphQLString) },
     timestamp: { type: new GraphQLNonNull(GraphQLString) },
   },
   outputFields: {
-    messageEdge: {
-      type: GraphQLMessageEdge,
-      resolve: ({ messageID }) => {
-        var message = getMessage(messageID);
+    datacenterEdge: {
+      type: GraphQLDatacenterEdge,
+      resolve: ({ datacenterID }) => {
+        var datacenter = getDatacenter(datacenterID);
         return {
-          cursor: cursorForObjectInConnection(getMessages(), message),
-          node: message,
+          cursor: cursorForObjectInConnection(getDatacenters(), datacenter),
+          node: datacenter,
         };
       },
     },
-    viewer: {
-      type: GraphQLUser,
-      resolve: () => getViewer(),
+    cloud: {
+      type: GraphQLCloud,
+      resolve: () => getCloud(),
     },
   },
   mutateAndGetPayload: ({ text, timestamp }) => {
-    var messageID = addMessage(text, timestamp);
-    return { messageID };
+    var datacenterID = addDatacenter(text, timestamp);
+    return { datacenterID };
   },
 });
 
-var GraphQLRemoveMessageMutation = mutationWithClientMutationId({
-  name: 'RemoveMessage',
+var GraphQLRemoveDatacenterMutation = mutationWithClientMutationId({
+  name: 'RemoveDatacenter',
   inputFields: {
     id: { type: new GraphQLNonNull(GraphQLID) },
   },
   outputFields: {
-    deletedMessageId: {
+    deletedDatacenterId: {
       type: GraphQLID,
       resolve: ({ id }) => id,
     },
-    viewer: {
-      type: GraphQLUser,
-      resolve: () => getViewer(),
+    cloud: {
+      type: GraphQLCloud,
+      resolve: () => getCloud(),
     },
   },
   mutateAndGetPayload: ({ id }) => {
-    var messageID = fromGlobalId(id).id;
-    removeMessage(messageID);
+    var datacenterID = fromGlobalId(id).id;
+    removeDatacenter(datacenterID);
     return { id };
   },
 });
@@ -149,8 +149,8 @@ var GraphQLRemoveMessageMutation = mutationWithClientMutationId({
 var Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addMessage: GraphQLAddMessageMutation,
-    removeMessage: GraphQLRemoveMessageMutation,
+    addDatacenter: GraphQLAddDatacenterMutation,
+    removeDatacenter: GraphQLRemoveDatacenterMutation,
   },
 });
 

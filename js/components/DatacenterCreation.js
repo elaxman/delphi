@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import moment from 'moment';
 
-export default class MessageCreation extends React.Component {
+export default class DatacenterCreation extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
@@ -26,19 +26,19 @@ export default class MessageCreation extends React.Component {
 
   _handleKeyDown = (e) => {
     if (e.keyCode === 27) {
-      this.setState({message: ''});
+      this.setState({datacenter: ''});
     } else if (e.keyCode === 13) {
       this._commitChanges();
     }
   };
 
   _commitChanges = () => {
-    let newMessage = {
+    let newDatacenter = {
       text: this.state.text.trim(),
       timestamp: this.state.timestamp,
     };
-    if (newMessage.text) {
-      this.props.onSave(newMessage);
+    if (newDatacenter.text) {
+      this.props.onSave(newDatacenter);
       this.setState({text: ''});
     }
   };

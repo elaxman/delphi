@@ -3,24 +3,24 @@ import Relay from 'react-relay';
 
 import moment from 'moment';
 
-import RemoveMessageMutation from '../mutations/RemoveMessageMutation';
+import RemoveDatacenterMutation from '../mutations/RemoveDatacenterMutation';
 
-class MessagesListItem extends React.Component {
+class DatacentersListItem extends React.Component {
 
   _handleDestroyClick = () => {
-    this._removeMessage();
+    this._removeDatacenter();
   };
 
-  _removeMessage() {
+  _removeDatacenter() {
     Relay.Store.commitUpdate(
-      new RemoveMessageMutation({message: this.props.message, viewer: this.props.viewer})
+      new RemoveDatacenterMutation({datacenter: this.props.datacenter, cloud: this.props.cloud})
     );
   };
 
   render() {
-    var { text, timestamp} = this.props.message;
+    var { text, timestamp} = this.props.datacenter;
     return (
-      <li className="message">
+	<li className="datacenter">
         <div className="timestamp">
           <span>{moment(timestamp).format('H:mm')}</span>
         </div>
@@ -30,19 +30,19 @@ class MessagesListItem extends React.Component {
         <div className="delete-btn">
           <button onClick={this._handleDestroyClick}>Delete</button>
         </div>
-      </li>
+	</li>
     );
   }
 }
 
-export default Relay.createContainer(MessagesListItem, {
+export default Relay.createContainer(DatacentersListItem, {
   fragments: {
-    message: () => Relay.QL`
-      fragment on Message {
+    datacenter: () => Relay.QL`
+      fragment on Datacenter {
         id,
         text,
         timestamp,
-        ${RemoveMessageMutation.getFragment('message')},
+        ${RemoveDatacenterMutation.getFragment('datacenter')},
       }
     `,
   },
